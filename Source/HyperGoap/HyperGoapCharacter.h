@@ -39,9 +39,15 @@ class AHyperGoapCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
 
+	/** Markov Run Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* RunMarkovAction;
 	
 public:
 	AHyperGoapCharacter();
+
+	UFUNCTION(BlueprintCallable, Category = "SimpleMarkov")
+	void SampleRun();
 
 protected:
 	virtual void BeginPlay();
