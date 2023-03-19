@@ -22,7 +22,7 @@ protected:
 	/*
 	* @brief Generates our Block array based on the height map from our Noise library
 	*/
-	virtual void Setup() override;
+	virtual void Setup(EBlock CState) override;
 
 	virtual void Generate2DHeightMap(FVector Position) override;
 
@@ -35,6 +35,8 @@ private:
 
 	// 1D-Array of blocks for the current chunk
 	TArray<EBlock> Blocks;
+
+	EBlock ChunkState;
 
 	// Vertices that correspond to 8 points of a cube
 	const FVector BlockVertexData[8] = {

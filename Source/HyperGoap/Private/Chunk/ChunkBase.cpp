@@ -30,7 +30,7 @@ void AChunkBase::BeginPlay()
 	Noise->SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 	Noise->SetFractalType(FastNoiseLite::FractalType_FBm);
 
-	Setup();
+	Setup(State);
 
 	GenerateHeightMap();
 

@@ -33,6 +33,11 @@ public:
 	*/
 	void SetNumStates();
 
+	/*
+	* Update current state to the next after looking at the transition matrix
+	*/
+	void NextState();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -41,5 +46,5 @@ private:
 	int current_state = -1;
 	TArray<int> states;
 	int iterations;
-	double transition_matrix[3][3] = { {0.6, 0.2, 0.2}, {0.1, 0.8, 0.1}, {0.3, 0.2, 0.5} };
+	double transition_matrix[3][3] = { {0.2, 0.2, 0.6}, {0.1, 0.3, 0.6}, {0.1, 0.2, 0.8} };
 };

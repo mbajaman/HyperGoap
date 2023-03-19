@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 
 #include "Utils/Enums.h"
+#include "Utils/MarkovChain.h"
 
 #include "CWorld.generated.h"
 
@@ -43,5 +44,7 @@ private:
 	int ChunkCount;
 
 	void Generate2DWorld();
+
+	AMarkovChain* MarkovChain;
 
 };

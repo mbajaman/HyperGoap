@@ -3,9 +3,10 @@
 #include "Chunk.h"
 #include "Utils/FastNoiseLite.h"
 
-void AChunk::Setup()
+void AChunk::Setup(EBlock CState)
 {
 	Blocks.SetNum(Size * Size * Size);
+	ChunkState = CState;
 }
 
 void AChunk::Generate2DHeightMap(const FVector Position)
@@ -25,7 +26,7 @@ void AChunk::Generate2DHeightMap(const FVector Position)
 			// TODO: Change Block type based on next state
 			for (int z = 0; z < Height; z++)
 			{
-				Blocks[GetBlockIndex(x, y, z)] = EBlock::Stone;
+				Blocks[GetBlockIndex(x, y, z)] = ChunkState;
 			}
 
 			for (int z = Height; z < Size; z++)
@@ -128,7 +129,19 @@ FVector AChunk::GetNormal(const EDirection Direction) const
 
 void AChunk::CreateFace(EDirection Direction, FVector Position)
 {
-	const auto Color = FColor::MakeRandomColor();
+	//const auto Color = FColor::MakeRandomColor();
+	FColor Color;
+	switch (ChunkState) {
+		case EBlock::Dirt:
+			Color = FColor(255, 255, 255, 255);
+			break;
+		case EBlock::Stone:
+			Color = FColor(25, 75, 255, 255);
+			break;
+		default:
+			Color = FColor::MakeRandomColor();
+	}
+
 	const auto Normal = GetNormal(Direction);
 
 	MeshData.Vertices.Append(GetFaceVertices(Direction, Position));
