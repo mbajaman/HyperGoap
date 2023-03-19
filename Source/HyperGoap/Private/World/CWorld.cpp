@@ -3,6 +3,8 @@
 
 #include "CWorld.h"
 
+#include "Chunk/ChunkBase.h"
+
 // Sets default values
 ACWorld::ACWorld()
 {
@@ -16,11 +18,28 @@ void ACWorld::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Generate2DWorld();
+
+	UE_LOG(LogTemp, Warning, TEXT("%d Chunks Created"), ChunkCount);
+}
+
+void ACWorld::Generate2DWorld()
+{
 	for (int x = -DrawDistance; x <= DrawDistance; x++)
 	{
 		for (int y = -DrawDistance; y <= DrawDistance; y++)
 		{
-			GetWorld()->SpawnActor<AActor>(Chunk, FVector(x * ChunkSize * 100, y * ChunkSize * 100, 0), FRotator::ZeroRotator);
+			auto transform = FTransform(
+				FRotator::ZeroRotator,
+				FVector(x * Size * 100, y * Size * 100, 0),
+				FVector::OneVector
+			);
+
+			const auto chunk = GetWorld()->SpawnActorDeferred<AChunkBase>(Chunk, transform, this);
+			chunk->Frequency = Frequency;
+			chunk->Material = Material;
+			chunk->Size = Size;
+			ChunkCount++;
 		}
 	}
 }

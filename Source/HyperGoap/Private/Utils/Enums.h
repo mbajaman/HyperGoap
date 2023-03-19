@@ -18,3 +18,10 @@ enum class EBlock
 	Dirt,
 	Grass
 };
+
+enum class States
+{
+	Stone,
+	Dirt,
+	Grass
+};
