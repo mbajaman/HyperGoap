@@ -130,24 +130,24 @@ FVector AChunk::GetNormal(const EDirection Direction) const
 void AChunk::CreateFace(EDirection Direction, FVector Position)
 {
 	//const auto Color = FColor::MakeRandomColor();
+	const auto Normal = GetNormal(Direction);
 	FColor Color;
 	switch (ChunkState) {
 		case EBlock::Dirt:
-			Color = FColor(215, 75, 0, 255);
+			Color = FColor(0, 0, 0, GetTextureIndex(ChunkState,Normal));
 			break;
 		case EBlock::Stone:
-			Color = FColor(25, 75, 255, 255);
+			Color = FColor(0, 0, 0, GetTextureIndex(ChunkState, Normal));
 			break;
 		case EBlock::Grass:
-			Color = FColor(25, 255, 75, 255);
+			Color = FColor(0, 0, 0, GetTextureIndex(ChunkState, Normal));
 			break;
 		default:
 			Color = FColor::MakeRandomColor();
 	}
 
-	const auto Normal = GetNormal(Direction);
-
 	MeshData.Vertices.Append(GetFaceVertices(Direction, Position));
+
 	MeshData.Triangles.Append({ 
 		VertexCount + 3,
 		VertexCount + 2,
@@ -156,8 +156,21 @@ void AChunk::CreateFace(EDirection Direction, FVector Position)
 		VertexCount + 1,
 		VertexCount 
 	});
-	MeshData.Normals.Append({ Normal, Normal, Normal, Normal });
-	MeshData.Colors.Append({ Color, Color, Color, Color });
+
+	MeshData.Normals.Append({ 
+		Normal, 
+		Normal, 
+		Normal, 
+		Normal 
+	});
+
+	MeshData.Colors.Append({ 
+		Color, 
+		Color, 
+		Color, 
+		Color 
+	});
+
 	MeshData.UV0.Append({
 		FVector2D(1, 1), 
 		FVector2D(1, 0), 
@@ -172,4 +185,20 @@ int AChunk::GetBlockIndex(int X, int Y, int Z) const
 	// Flatenning a 3D index to 1D. You move along the Z axis first, then Y and then X.
 	// X Dimension filled, then Y Dimension filled, then Z.
 	return Z * Size * Size + Y * Size + X;
+}
+
+int AChunk::GetTextureIndex(EBlock Block, FVector Normal) const
+{
+	switch (Block)
+	{
+		case EBlock::Grass:
+			return 0;
+		case EBlock::Dirt:
+			return 1;
+		case EBlock::Stone:
+			return 2;
+		default:
+			return 255;
+	}
+
 }
