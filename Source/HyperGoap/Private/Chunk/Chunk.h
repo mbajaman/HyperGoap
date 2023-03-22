@@ -4,51 +4,39 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
+#include "ChunkBase.h"
+#include "Utils/Enums.h"
+
 #include "Chunk.generated.h"
 
-// Forward Declarations
-enum class EBlock;
-enum class EDirection;
 class FastNoiseLite;
 class UProceduralMeshComponent;
 
 UCLASS()
-class AChunk : public AActor
+class AChunk final : public AChunkBase
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AChunk();
-
-	// Exposes to Unreal Editor
-	UPROPERTY(EditAnywhere, Category = "Chunk")
-		int Size = 32; // Size of the chunk in X, Y and Z directions
-
-	// Exposes to Unreal Editor
-	UPROPERTY(EditAnywhere, Category = "Chunk")
-		int Scale = 1; // Scale represents the scale of the faces drawn in the chunk
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	/*
+	* @brief Generates our Block array based on the height map from our Noise library
+	*/
+	virtual void Setup(EBlock CState) override;
+
+	virtual void Generate2DHeightMap(FVector Position) override;
+
+	/*
+	* @brief Populate our VertexData, TriangleData and UVData arrays and create Mesh
+	*/
+	virtual void GenerateMesh() override;
 
 private:	
 
-	// TObjectPtr adds more safety and checks instead of typical C++ pointers
-	TObjectPtr<UProceduralMeshComponent> Mesh;
-	TObjectPtr<FastNoiseLite> Noise;
-
 	// 1D-Array of blocks for the current chunk
-	TArray<EBlock> Blocks; 
+	TArray<EBlock> Blocks;
 
-	// Vertex, Triangle and UVData that will generated and setup for the ProceduralMeshComponent
-	TArray<FVector> VertexData;
-	TArray<int> TriangleData;
-	TArray<FVector2D> UVData;
-
-	// Used for generation of the above MeshComponent data
-	int VertexCount = 0;
+	EBlock ChunkState;
 
 	// Vertices that correspond to 8 points of a cube
 	const FVector BlockVertexData[8] = {
@@ -73,30 +61,12 @@ private:
 		3, 2, 7, 6  // Down
 	};
 
-	/*
-	* @brief Generates our Block array based on the height map from our Noise library
-	*/
-	void GenerateBlocks();
 
-	/*
-	* @brief Populate our VertexData, TriangleData and UVData arrays and create Mesh
-	*/
-	void GenerateMesh();
-
-	/*
-	* @brief Will take vertex and index data and pass it to ProceduralMeshComponent. Rendering happens here
-	*/
-	void ApplyMesh() const;
-
+	/* ######### UTILITY METHODS #########*/
 	/*
 	* @brief UTILITY METHOD used to check if a given position contains an opaque block or a transparent block
 	*/
 	bool Check(FVector Position) const;
-
-	/*
-	* Creates faces to our mesh given some direction and position data
-	*/
-	void CreateFace(EDirection Direction, FVector Position);
 
 	/*
 	* @brief UTILITY METHOD used to query the vertex lookup table.
@@ -109,6 +79,16 @@ private:
 	* Adding a direction vector to position
 	*/
 	FVector GetPositionInDirection(EDirection Direction, FVector Position) const;
+
+	/*
+	* @brief Get Normal of a face given a direction
+	*/
+	FVector GetNormal(EDirection Direction) const;
+
+	/*
+	* Creates faces to our mesh given some direction and position data
+	*/
+	void CreateFace(EDirection Direction, FVector Position);
 
 	/*
 	* @brief We are storing our blocks in a 1D array but blocks will be represented in 3D.
