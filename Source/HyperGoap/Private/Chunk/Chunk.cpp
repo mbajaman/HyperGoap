@@ -133,10 +133,13 @@ void AChunk::CreateFace(EDirection Direction, FVector Position)
 	FColor Color;
 	switch (ChunkState) {
 		case EBlock::Dirt:
-			Color = FColor(255, 255, 255, 255);
+			Color = FColor(215, 75, 0, 255);
 			break;
 		case EBlock::Stone:
 			Color = FColor(25, 75, 255, 255);
+			break;
+		case EBlock::Grass:
+			Color = FColor(25, 255, 75, 255);
 			break;
 		default:
 			Color = FColor::MakeRandomColor();

@@ -2,16 +2,17 @@
 
 
 #include "CWorld.h"
-
-#include "Chunk/ChunkBase.h"
 #include "Utils/MarkovChain.h"
+#include "Chunk/ChunkBase.h"
+
+
 
 // Sets default values
 ACWorld::ACWorld()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
+	mChain = new MarkovChain();
 }
 
 // Called when the game starts or when spawned
@@ -26,12 +27,18 @@ void ACWorld::BeginPlay()
 
 void ACWorld::Generate2DWorld()
 {
-	//MarkovChain->GenerateStatesArray();
-	//TArray<int> StatesArray = MarkovChain->GetStates();
-	//for (int x = 0; x < MarkovChain->GetStates().Num(); x++)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("State: %d"), MarkovChain->GetStates()[x] + 2);
-	//}
+	mChain->GenerateStatesArray();
+	TArray<int> StatesArray;
+	StatesArray.Append(mChain->GetStates());
+	UE_LOG(LogTemp, Warning, TEXT("Array Size: %d"), StatesArray.Num());
+
+	for (auto& state : StatesArray)
+	{
+		state += 2;
+		UE_LOG(LogTemp, Warning, TEXT("State: %d"), state);
+	}
+
+	int transition = 0;
 
 	for (int x = -DrawDistance; x <= DrawDistance; x++)
 	{
@@ -48,17 +55,24 @@ void ACWorld::Generate2DWorld()
 			chunk->Material = Material;
 			chunk->Size = Size;
 
-			double random_number = FMath::FRandRange(0.0, 1.0);
-			if (random_number < 0.5)
+			if (transition < StatesArray.Num())
 			{
-				chunk->State = EBlock::Stone;
-			}
-			else
-			{
-				chunk->State = EBlock::Dirt;
+				switch (StatesArray[transition])
+				{
+				case 2:
+					chunk->State = EBlock::Stone;
+					break;
+				case 3:
+					chunk->State = EBlock::Dirt;
+					break;
+				case 4:
+					chunk->State = EBlock::Grass;
+					break;
+				}
 			}
 
 			ChunkCount++;
+			transition++;
 		}
 	}
 }

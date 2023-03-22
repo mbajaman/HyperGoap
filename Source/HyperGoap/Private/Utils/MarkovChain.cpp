@@ -2,22 +2,22 @@
 
 
 #include "MarkovChain.h"
-#include "Chunk/Chunk.h"
 
-AMarkovChain::AMarkovChain()
+MarkovChain::MarkovChain()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-	
+	states.SetNum(50);
+	iterations = 49;
+	current_state = 0;
 }
 
-void AMarkovChain::BeginPlay()
+MarkovChain::~MarkovChain()
 {
-	Super::BeginPlay();
+	states.Empty();
 }
 
-void AMarkovChain::GenerateStatesArray()
+void MarkovChain::GenerateStatesArray()
 {
+	states.Empty();
 	for (int i = 0; i < iterations; i++)
 	{
 		double random_number = FMath::FRandRange(0.0, 1.0);
@@ -39,13 +39,7 @@ void AMarkovChain::GenerateStatesArray()
 	}
 }
 
-TArray<int> AMarkovChain::GetStates()
+TArray<int> MarkovChain::GetStates()
 {
 	return states;
 }
-
-void AMarkovChain::SetNumStates()
-{
-}
-
-

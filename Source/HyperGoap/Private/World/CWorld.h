@@ -36,6 +36,8 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = "World")
 		float Frequency = 0.01f;
 
+	MarkovChain* mChain;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,6 +47,5 @@ private:
 
 	void Generate2DWorld();
 
-	AMarkovChain* MarkovChain;
 
 };

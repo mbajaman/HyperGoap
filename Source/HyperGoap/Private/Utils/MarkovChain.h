@@ -2,21 +2,14 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-
-#include "MarkovChain.generated.h"
-
 typedef TArray<TArray<int>> TArray2D;
 
-UCLASS()
-class AMarkovChain : public AActor
+class MarkovChain
 {
-	GENERATED_BODY()
-
 
 public:
-	AMarkovChain();
+	MarkovChain();
+	~MarkovChain();
 
 	/*
 	* @brief Generate the list of ints representing the states
@@ -38,13 +31,13 @@ public:
 	*/
 	void NextState();
 
+	TArray<int> states;
+
 protected:
-	virtual void BeginPlay() override;
 
 private:
 	int numStates;
-	int current_state = -1;
-	TArray<int> states;
+	int current_state;
 	int iterations;
 	double transition_matrix[3][3] = { {0.2, 0.2, 0.6}, {0.1, 0.3, 0.6}, {0.1, 0.2, 0.8} };
 };
