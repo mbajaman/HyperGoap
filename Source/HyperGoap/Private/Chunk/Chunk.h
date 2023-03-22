@@ -95,4 +95,6 @@ private:
 	* To flatten out X,Y and Z coordinates into a single index. It will return the correct array index for that block in the Blocks array.
 	*/
 	int GetBlockIndex(int X, int Y, int Z) const;
+
+	int GetTextureIndex(EBlock Block, FVector Normal) const;
 };
