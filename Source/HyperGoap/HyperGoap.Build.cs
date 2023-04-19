@@ -12,10 +12,13 @@ public class HyperGoap : ModuleRules
 			"Core", 
 			"CoreUObject", 
 			"Engine", 
+			"Slate",
+			"SlateCore",
 			"InputCore", 
 			"HeadMountedDisplay", 
 			"EnhancedInput", 
-			"ProceduralMeshComponent" 
+			"ProceduralMeshComponent",
+			"AIModule",
 		});
 	}
 }
