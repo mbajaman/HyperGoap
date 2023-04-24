@@ -4,7 +4,7 @@
 #include "CWorld.h"
 #include "Utils/MarkovChain.h"
 #include "Chunk/ChunkBase.h"
-
+#include "CubeMesh.h"
 
 
 // Sets default values
@@ -70,6 +70,39 @@ void ACWorld::Generate2DWorld()
 					break;
 				}
 			}
+
+			chunk->FinishSpawning(transform);
+
+			FVector ChunkOrigin = chunk->GetActorLocation();
+			FVector ChunkSize = chunk->GetActorScale() * Size;
+			TArray<EBlock> ChunkBlocks = chunk->GetBlocksArray();
+
+			// WORKING CODE FOR GENERATING FOLIAGE PROCEDURALLY BY PLACING STATIC MESHES IN THE WORLD
+			// This puts a cube in EVERY voxel in the chunk
+			//for (int v = 0; v < Size; v++)
+			//{
+			//	for (int u = 0; u < Size; u++)
+			//	{
+			//		for (int w = 0; w < Size; w++)
+			//		{
+			//			if (ChunkBlocks[chunk->GetBlocksArrayIndex(v, u, w)] != EBlock::Air &&
+			//				(w == Size - 1 || ChunkBlocks[chunk->GetBlocksArrayIndex(v, u, w + 1)] == EBlock::Air))
+			//			{
+			//				FVector VoxelCenter = FVector(
+			//					ChunkOrigin.X + (v * 100) + 50, 
+			//					ChunkOrigin.Y + (u * 100) + 50, 
+			//					ChunkOrigin.Z + (w * 100) + 100
+			//				);
+			//				FVector VoxelTopCenter = FVector(
+			//					ChunkOrigin.X + (v + 0.5f) * Size,
+			//					ChunkOrigin.Y + (u + 0.5f) * Size,
+			//					ChunkOrigin.Z + (w + 1) * Size
+			//				);
+			//				GetWorld()->SpawnActor<ACubeMesh>(VoxelCenter, FRotator::ZeroRotator);
+			//			}
+			//		}
+			//	}
+			//}
 
 			ChunkCount++;
 			transition++;

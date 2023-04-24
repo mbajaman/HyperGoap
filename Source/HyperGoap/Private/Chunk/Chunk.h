@@ -17,7 +17,7 @@ UCLASS()
 class AChunk final : public AChunkBase
 {
 	GENERATED_BODY()
-	
+
 protected:
 	/*
 	* @brief Generates our Block array based on the height map from our Noise library
@@ -31,10 +31,10 @@ protected:
 	*/
 	virtual void GenerateMesh() override;
 
-private:	
-
 	// 1D-Array of blocks for the current chunk
 	TArray<EBlock> Blocks;
+
+private:	
 
 	EBlock ChunkState;
 
@@ -94,7 +94,13 @@ private:
 	* @brief We are storing our blocks in a 1D array but blocks will be represented in 3D.
 	* To flatten out X,Y and Z coordinates into a single index. It will return the correct array index for that block in the Blocks array.
 	*/
-	int GetBlockIndex(int X, int Y, int Z) const;
 
 	int GetTextureIndex(EBlock Block, FVector Normal) const;
+
+public:
+	int GetBlockIndex(int X, int Y, int Z) const;
+
+	virtual TArray<EBlock> GetBlocksArray() const override;
+
+	virtual int GetBlocksArrayIndex(int X, int Y, int Z) const  override;
 };

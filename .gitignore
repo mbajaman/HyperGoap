@@ -72,3 +72,7 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Exclude Megascans content - This is saved on GDrive
+# Should be copied from there before generating VS files
+Content/Megascans/*

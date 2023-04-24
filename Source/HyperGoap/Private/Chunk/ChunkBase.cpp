@@ -6,12 +6,15 @@
 #include "Utils/FastNoiseLite.h"
 #include "ProceduralMeshComponent.h"
 
+#include "Components/StaticMeshComponent.h"
+#include "UObject/ConstructorHelpers.h"
+
 // Sets default values
 AChunkBase::AChunkBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	Mesh = CreateDefaultSubobject<UProceduralMeshComponent>("Mesh");
+	Mesh = CreateDefaultSubobject<UProceduralMeshComponent>("ChunkMesh");
 	Noise = new FastNoiseLite();
 
 	Mesh->SetCastShadow(true);

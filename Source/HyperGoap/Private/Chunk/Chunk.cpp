@@ -2,6 +2,7 @@
 
 #include "Chunk.h"
 #include "Utils/FastNoiseLite.h"
+#include "CubeMesh.h"
 
 void AChunk::Setup(EBlock CState)
 {
@@ -185,6 +186,17 @@ int AChunk::GetBlockIndex(int X, int Y, int Z) const
 	// Flatenning a 3D index to 1D. You move along the Z axis first, then Y and then X.
 	// X Dimension filled, then Y Dimension filled, then Z.
 	return Z * Size * Size + Y * Size + X;
+}
+
+TArray<EBlock> AChunk::GetBlocksArray() const
+{
+	// Log size of Blocks array
+	return Blocks;
+}
+
+int AChunk::GetBlocksArrayIndex(int X, int Y, int Z) const
+{
+	return GetBlockIndex(X, Y, Z);
 }
 
 int AChunk::GetTextureIndex(EBlock Block, FVector Normal) const

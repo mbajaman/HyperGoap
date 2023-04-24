@@ -23,7 +23,7 @@ public:
 	AChunkBase();
 
 	// Exposes to Unreal Editor
-	UPROPERTY(EditDefaultsOnly, Category = "Chunk")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chunk")
 		int Size = 32; // Size of the chunk in X, Y and Z directions
 
 	// TObjectPtr adds more safety and checks instead of typical C++ pointers
@@ -45,7 +45,7 @@ protected:
 	* @brief Populate our VertexData, TriangleData and UVData arrays and create Mesh
 	*/
 	virtual void GenerateMesh() PURE_VIRTUAL(AChunkBase::GenerateMesh);
-	
+
 	// TObjectPtr adds more safety and checks instead of typical C++ pointers
 	TObjectPtr<UProceduralMeshComponent> Mesh;
 	FastNoiseLite* Noise;
@@ -62,4 +62,16 @@ private:
 	void GenerateHeightMap();
 
 	void ClearMesh();
+
+public:
+	virtual TArray<EBlock> GetBlocksArray() const PURE_VIRTUAL
+	(
+		AChunkBase::GetBlocksArray,
+
+		TArray<EBlock> EmptyArray;
+		EmptyArray.Init(EBlock::Null, 5);
+		return EmptyArray;
+	);
+
+	virtual int GetBlocksArrayIndex(int X, int Y, int Z) const PURE_VIRTUAL(AChunkBase::GetBlocksArrayIndex, return 0;);
 };
