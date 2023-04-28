@@ -2,11 +2,13 @@
 
 #include "Chunk.h"
 #include "Utils/FastNoiseLite.h"
+#include "CubeMesh.h"
 
-void AChunk::Setup(EBlock CState)
+void AChunk::Setup(EBlock CState, States CType)
 {
 	Blocks.SetNum(Size * Size * Size);
-	ChunkState = CState;
+	ChunkState = static_cast<EBlock>(static_cast<int>(CState) + 2);
+	ChunkType = CType;
 }
 
 void AChunk::Generate2DHeightMap(const FVector Position)
@@ -129,18 +131,20 @@ FVector AChunk::GetNormal(const EDirection Direction) const
 
 void AChunk::CreateFace(EDirection Direction, FVector Position)
 {
-	//const auto Color = FColor::MakeRandomColor();
 	const auto Normal = GetNormal(Direction);
 	FColor Color;
-	switch (ChunkState) {
-		case EBlock::Dirt:
-			Color = FColor(0, 0, 0, GetTextureIndex(ChunkState,Normal));
+	switch (ChunkType) {
+		case States::Grassland:
+			Color = FColor(0, 0, 0, GetTextureIndex(ChunkType, Normal));
 			break;
-		case EBlock::Stone:
-			Color = FColor(0, 0, 0, GetTextureIndex(ChunkState, Normal));
+		case States::Village:
+			Color = FColor(0, 0, 0, GetTextureIndex(ChunkType, Normal));
 			break;
-		case EBlock::Grass:
-			Color = FColor(0, 0, 0, GetTextureIndex(ChunkState, Normal));
+		case States::AbandonedBuilding:
+			Color = FColor(0, 0, 0, GetTextureIndex(ChunkType, Normal));
+			break;
+		case States::Pond:
+			Color = FColor(0, 0, 0, GetTextureIndex(ChunkType, Normal));
 			break;
 		default:
 			Color = FColor::MakeRandomColor();
@@ -187,18 +191,31 @@ int AChunk::GetBlockIndex(int X, int Y, int Z) const
 	return Z * Size * Size + Y * Size + X;
 }
 
-int AChunk::GetTextureIndex(EBlock Block, FVector Normal) const
+TArray<EBlock> AChunk::GetBlocksArray() const
+{
+	// Log size of Blocks array
+	return Blocks;
+}
+
+int AChunk::GetBlocksArrayIndex(int X, int Y, int Z) const
+{
+	return GetBlockIndex(X, Y, Z);
+}
+
+int AChunk::GetTextureIndex(States Block, FVector Normal) const
 {
 	switch (Block)
 	{
-		case EBlock::Grass:
-			return 0;
-		case EBlock::Dirt:
-			return 1;
-		case EBlock::Stone:
-			return 2;
-		default:
-			return 255;
+	case States::Grassland:
+		return 0;
+	case States::Village:
+		return 1;
+	case States::AbandonedBuilding:
+		return 2;
+	case States::Pond:
+		return 3;
+	default:
+		return 255;
 	}
 
 }

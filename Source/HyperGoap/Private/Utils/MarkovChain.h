@@ -9,6 +9,7 @@ class MarkovChain
 
 public:
 	MarkovChain();
+	MarkovChain(int Size);
 	~MarkovChain();
 
 	/*
@@ -22,6 +23,11 @@ public:
 	TArray<int> GetStates();
 
 	/*
+	* @brief Get the size of the array of states
+	*/
+	int GetSize();
+
+	/*
 	* @brief Set the number of states to generate
 	*/
 	void SetNumStates();
@@ -29,15 +35,21 @@ public:
 	/*
 	* Update current state to the next after looking at the transition matrix
 	*/
-	void NextState();
+	int NextState(double rand_n);
 
 	TArray<int> states;
 
 protected:
 
 private:
-	int numStates;
 	int current_state;
-	int iterations;
-	double transition_matrix[3][3] = { {0.2, 0.2, 0.6}, {0.1, 0.3, 0.6}, {0.1, 0.2, 0.8} };
+	int next_state;
+	int size;
+	double transition_matrix[5][5] = { 
+		{0.7, 0.1, 0.1, 0.1, 0.0}, 
+		{0.8, 0.2, 0.0, 0.0, 0.0}, 
+		{0.8, 0.0, 0.2, 0.0, 0.0},
+		{0.8, 0.0, 0.0, 0.0, 0.2},
+		{0.8, 0.0, 0.0, 0.0, 0.2}
+	};
 };

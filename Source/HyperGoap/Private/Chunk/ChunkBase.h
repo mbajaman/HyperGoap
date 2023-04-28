@@ -23,13 +23,19 @@ public:
 	AChunkBase();
 
 	// Exposes to Unreal Editor
-	UPROPERTY(EditDefaultsOnly, Category = "Chunk")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chunk")
 		int Size = 32; // Size of the chunk in X, Y and Z directions
 
 	// TObjectPtr adds more safety and checks instead of typical C++ pointers
 	TObjectPtr<UMaterialInterface> Material;
+
 	float Frequency;
-	EBlock State;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chunk")
+		EBlock State;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chunk")
+		States Type;
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,14 +44,14 @@ protected:
 	/*
 	* @brief Generates our Block array based on the height map from our Noise library
 	*/
-	virtual void Setup(const EBlock CState) PURE_VIRTUAL(AChunkBase::Setup);
+	virtual void Setup(const EBlock CState, const States CType) PURE_VIRTUAL(AChunkBase::Setup);
 	virtual void Generate2DHeightMap(const FVector Position) PURE_VIRTUAL(AChunkBase::Generate2DHeightMap);
 
 	/*
 	* @brief Populate our VertexData, TriangleData and UVData arrays and create Mesh
 	*/
 	virtual void GenerateMesh() PURE_VIRTUAL(AChunkBase::GenerateMesh);
-	
+
 	// TObjectPtr adds more safety and checks instead of typical C++ pointers
 	TObjectPtr<UProceduralMeshComponent> Mesh;
 	FastNoiseLite* Noise;
@@ -62,4 +68,16 @@ private:
 	void GenerateHeightMap();
 
 	void ClearMesh();
+
+public:
+	virtual TArray<EBlock> GetBlocksArray() const PURE_VIRTUAL
+	(
+		AChunkBase::GetBlocksArray,
+
+		TArray<EBlock> EmptyArray;
+		EmptyArray.Init(EBlock::Null, 5);
+		return EmptyArray;
+	);
+
+	virtual int GetBlocksArrayIndex(int X, int Y, int Z) const PURE_VIRTUAL(AChunkBase::GetBlocksArrayIndex, return 0;);
 };
