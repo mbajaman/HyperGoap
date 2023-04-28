@@ -34,7 +34,7 @@ void ACWorld::Generate2DWorld()
 
 	for (auto& state : StatesArray)
 	{
-		state += 2;
+		//state += 2;
 		UE_LOG(LogTemp, Warning, TEXT("State: %d"), state);
 	}
 
@@ -59,14 +59,21 @@ void ACWorld::Generate2DWorld()
 			{
 				switch (StatesArray[transition])
 				{
+				case 0:
+					chunk->State = EBlock::Grassland;
+					chunk->Type = States::Grassland;
+					break;
+				case 1:
+					chunk->State = EBlock::Village;
+					chunk->Type = States::Village;
+					break;
 				case 2:
-					chunk->State = EBlock::Stone;
+					chunk->State = EBlock::AbandonedBuilding;
+					chunk->Type = States::AbandonedBuilding;
 					break;
 				case 3:
-					chunk->State = EBlock::Dirt;
-					break;
-				case 4:
-					chunk->State = EBlock::Grass;
+					chunk->State = EBlock::Pond;
+					chunk->Type = States::Pond;
 					break;
 				}
 			}

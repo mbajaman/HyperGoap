@@ -1,4 +1,5 @@
 #pragma once
+#include "CoreMinimal.h"
 
 enum class EDirection
 {
@@ -10,18 +11,22 @@ enum class EDirection
 	Down
 };
 
-enum class EBlock
+UENUM(BlueprintType)
+enum class EBlock : uint8
 {
 	Null,
 	Air,
-	Stone,
-	Dirt,
-	Grass
+	Grassland,
+	Village,
+	AbandonedBuilding,
+	Pond
 };
 
-enum class States
+UENUM(BlueprintType)
+enum class States : uint8
 {
-	Stone,
-	Dirt,
-	Grass
+	Grassland,
+	Village,
+	AbandonedBuilding,
+	Pond
 };

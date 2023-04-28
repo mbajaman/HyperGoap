@@ -22,7 +22,7 @@ protected:
 	/*
 	* @brief Generates our Block array based on the height map from our Noise library
 	*/
-	virtual void Setup(EBlock CState) override;
+	virtual void Setup(EBlock CState, States CType) override;
 
 	virtual void Generate2DHeightMap(FVector Position) override;
 
@@ -37,6 +37,8 @@ protected:
 private:	
 
 	EBlock ChunkState;
+
+	States ChunkType;
 
 	// Vertices that correspond to 8 points of a cube
 	const FVector BlockVertexData[8] = {
@@ -95,7 +97,7 @@ private:
 	* To flatten out X,Y and Z coordinates into a single index. It will return the correct array index for that block in the Blocks array.
 	*/
 
-	int GetTextureIndex(EBlock Block, FVector Normal) const;
+	int GetTextureIndex(States Block, FVector Normal) const;
 
 public:
 	int GetBlockIndex(int X, int Y, int Z) const;

@@ -2,7 +2,7 @@
 
 
 #include "ChunkBase.h"
-	
+
 #include "Utils/FastNoiseLite.h"
 #include "ProceduralMeshComponent.h"
 
@@ -33,7 +33,7 @@ void AChunkBase::BeginPlay()
 	Noise->SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 	Noise->SetFractalType(FastNoiseLite::FractalType_FBm);
 
-	Setup(State);
+	Setup(State, Type);
 
 	GenerateHeightMap();
 

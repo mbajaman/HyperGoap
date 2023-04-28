@@ -28,8 +28,14 @@ public:
 
 	// TObjectPtr adds more safety and checks instead of typical C++ pointers
 	TObjectPtr<UMaterialInterface> Material;
+
 	float Frequency;
-	EBlock State;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chunk")
+		EBlock State;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chunk")
+		States Type;
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,7 +44,7 @@ protected:
 	/*
 	* @brief Generates our Block array based on the height map from our Noise library
 	*/
-	virtual void Setup(const EBlock CState) PURE_VIRTUAL(AChunkBase::Setup);
+	virtual void Setup(const EBlock CState, const States CType) PURE_VIRTUAL(AChunkBase::Setup);
 	virtual void Generate2DHeightMap(const FVector Position) PURE_VIRTUAL(AChunkBase::Generate2DHeightMap);
 
 	/*
