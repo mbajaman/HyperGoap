@@ -14,8 +14,8 @@ struct FState
 {
 	GENERATED_USTRUCT_BODY()
 
-		// Name of the state (predicate)
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	// Name of the state (predicate)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
 		FString name;
 	
 	// Value of the state (truth value)
