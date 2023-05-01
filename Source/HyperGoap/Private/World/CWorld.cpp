@@ -80,6 +80,7 @@ void ACWorld::Generate2DWorld()
 
 			chunk->FinishSpawning(transform);
 
+			// The below 3 lines can also be removed I think
 			FVector ChunkOrigin = chunk->GetActorLocation();
 			FVector ChunkSize = chunk->GetActorScale() * Size;
 			TArray<EBlock> ChunkBlocks = chunk->GetBlocksArray();
