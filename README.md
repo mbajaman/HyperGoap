@@ -14,4 +14,4 @@ A simple game that utilized procedrual generation for terrain and utilizes GOAP 
 An executable build of the game for Windows OS can be found here:
 [Windows Build](https://drive.google.com/file/d/1Clwh-1ttiLOtoDH-LyaiVMjfdOShrvG0/view?usp=share_link).
 
-
+To play the game, simply download and extract the zip file and run HyperGoap.exe located inside the `Windows` folder
