@@ -8,6 +8,17 @@ public class HyperGoap : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"Slate",
+			"SlateCore",
+			"InputCore", 
+			"HeadMountedDisplay", 
+			"EnhancedInput", 
+			"ProceduralMeshComponent",
+			"AIModule",
+		});
 	}
 }
