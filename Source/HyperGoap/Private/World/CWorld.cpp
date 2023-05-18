@@ -2,9 +2,12 @@
 
 
 #include "CWorld.h"
+#include "CoreTypes.h"
 #include "Utils/MarkovChain.h"
 #include "Chunk/ChunkBase.h"
 #include "CubeMesh.h"
+#include "Misc/DateTime.h"
+#include "Engine/Engine.h"
 
 
 // Sets default values
@@ -20,7 +23,26 @@ void ACWorld::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Record the start time
+	FDateTime StartTime = FDateTime::UtcNow();
+
 	Generate2DWorld();
+
+	// Record the end time
+	FDateTime EndTime = FDateTime::UtcNow();
+
+	// Calculate the elapsed time
+	FTimespan ElapsedTime = EndTime - StartTime;
+
+	// Convert the elapsed time to milliseconds
+	int64 ElapsedMilliseconds = ElapsedTime.GetTotalMilliseconds();
+
+	UWorld* World = GetWorld();
+	FString DebugMessage = FString::Printf(TEXT("Time taken for Chunk Generation (No Foliage/ Details): %dms"), ElapsedMilliseconds);
+	FColor DebugColor = FColor::FromHex("00A8FFFF");
+	float DisplayTime = 30.0f;
+	FVector2D TextScale(1.5f, 1.5f);
+	//GEngine->AddOnScreenDebugMessage(-1, DisplayTime, DebugColor, DebugMessage, false, TextScale);
 
 	UE_LOG(LogTemp, Warning, TEXT("%d Chunks Created"), ChunkCount);
 }
@@ -30,13 +52,6 @@ void ACWorld::Generate2DWorld()
 	mChain->GenerateStatesArray();
 	TArray<int> StatesArray;
 	StatesArray.Append(mChain->GetStates());
-	UE_LOG(LogTemp, Warning, TEXT("Array Size: %d"), StatesArray.Num());
-
-	for (auto& state : StatesArray)
-	{
-		//state += 2;
-		UE_LOG(LogTemp, Warning, TEXT("State: %d"), state);
-	}
 
 	int transition = 0;
 
